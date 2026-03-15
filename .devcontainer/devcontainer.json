@@ -1,0 +1,74 @@
+{
+  "name": "RagPrincipals — Python 3.14",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": ".."
+  },
+  "workspaceFolder": "/workspace",
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached",
+
+  // Install project dependencies on container creation
+  "postCreateCommand": "uv sync --all-groups",
+
+  // Activate the uv-managed virtual environment for every terminal session
+  "remoteEnv": {
+    "VIRTUAL_ENV": "/workspace/.venv",
+    "PATH": "/workspace/.venv/bin:${containerEnv:PATH}"
+  },
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        // Python core tooling
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "ms-python.mypy-type-checker",
+        // Ruff — linter + formatter (replaces flake8, isort, black)
+        "charliermarsh.ruff",
+        // Testing
+        "littlefoxteam.vscode-python-test-adapter",
+        "hbenl.vscode-test-explorer",
+        // General DX
+        "github.copilot",
+        "eamodio.gitlens",
+        "streetsidesoftware.code-spell-checker"
+      ],
+      "settings": {
+        // Use the uv-managed interpreter inside the container
+        "python.defaultInterpreterPath": "/workspace/.venv/bin/python",
+        "python.terminal.activateEnvironment": true,
+
+        // Ruff as the single formatter + linter
+        "editor.formatOnSave": true,
+        "[python]": {
+          "editor.defaultFormatter": "charliermarsh.ruff",
+          "editor.codeActionsOnSave": {
+            "source.fixAll.ruff": "explicit",
+            "source.organizeImports.ruff": "explicit"
+          }
+        },
+        "ruff.lineLength": 100,
+
+        // mypy strict mode
+        "mypy-type-checker.args": ["--strict"],
+
+        // pytest integration
+        "python.testing.pytestEnabled": true,
+        "python.testing.pytestArgs": ["tests"],
+        "python.testing.unittestEnabled": false,
+
+        // Editor quality of life
+        "editor.rulers": [100],
+        "editor.tabSize": 4,
+        "editor.insertSpaces": true,
+        "files.trimTrailingWhitespace": true,
+        "files.insertFinalNewline": true
+      }
+    }
+  },
+
+  // Forward no ports by default; add entries here as experiments expose services
+  "forwardPorts": [],
+
+  "remoteUser": "vscode"
+}
