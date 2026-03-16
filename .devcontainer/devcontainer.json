@@ -70,5 +70,10 @@
   // Forward no ports by default; add entries here as experiments expose services
   "forwardPorts": [],
 
-  "remoteUser": "vscode"
+  "remoteUser": "vscode",
+
+  "features": {
+    "ghcr.io/devcontainers/features/github-cli:1": {}
+  }
+
 }
