@@ -115,167 +115,56 @@ jobs:
 
           N=$(create_issue \
             "[N1] CSV Loader with Rich Metadata Extraction" \
-            "## Overview
-Implement \`extract_csv_metadata()\` and \`csv_to_text_chunks()\` for the VolleyBall match statistics CSV.
-
-## Deliverables
-- [ ] \`extract_csv_metadata(file_path)\` — file info, row/column counts, data types, date ranges, unique team names, numeric statistics summary
-- [ ] \`csv_to_text_chunks(file_path, chunk_by='row'|'group', group_size=5)\` — converts tabular rows to natural-language text chunks
-- [ ] \`load_and_chunk_csv_files(file_paths, chunk_strategy)\` — orchestrator that returns \`List[Document]\` with rich metadata attached
-
-## Acceptance criteria
-- Each Document has: \`source_type\`, \`file_name\`, \`row_count\`, \`column_names\`, \`teams\`, \`statistics_summary\`, \`chunk_index\`
-- Both 'row' and 'group' strategies produce valid Document objects
-- At least 1 unit test covers the metadata extractor
-
-## Reference
-\`Notebooks/Instructions_for_Implementing_RAG_with_VolleyBall_Dataset.md\` — Challenge 1 (Section 4)" \
+            $'## Overview\nImplement `extract_csv_metadata()` and `csv_to_text_chunks()` for the VolleyBall match statistics CSV.\n\n## Deliverables\n- [ ] `extract_csv_metadata(file_path)` — file info, row/column counts, data types, date ranges, unique team names, numeric statistics summary\n- [ ] `csv_to_text_chunks(file_path, chunk_by=\'row\'|\'group\', group_size=5)` — converts tabular rows to natural-language text chunks\n- [ ] `load_and_chunk_csv_files(file_paths, chunk_strategy)` — orchestrator that returns `List[Document]` with rich metadata attached\n\n## Acceptance criteria\n- Each Document has: `source_type`, `file_name`, `row_count`, `column_names`, `teams`, `statistics_summary`, `chunk_index`\n- Both \'row\' and \'group\' strategies produce valid Document objects\n- At least 1 unit test covers the metadata extractor\n\n## Reference\n`Notebooks/Instructions_for_Implementing_RAG_with_VolleyBall_Dataset.md` — Challenge 1 (Section 4)' \
             "notebook-1,data-loading,csv-analysis" "$M1")
           ISSUE_NUMBERS+=("$N")
           echo "  #$N [N1] CSV Loader with Rich Metadata Extraction"
 
           N=$(create_issue \
             "[N1] HTML Volleyball Rules Metadata Extraction" \
-            "## Overview
-Implement \`extract_html_metadata_volleyball()\` and \`load_and_chunk_html_volleyball()\` for official volleyball rules HTML files.
-
-## Deliverables
-- [ ] \`extract_html_metadata_volleyball(file_path)\` — extracts \`volleyball_type\` (beach/sand/grass/indoor), \`competition_level\`, \`organization\`, and \`rule_sections\` from filename and content
-- [ ] \`load_and_chunk_html_volleyball(file_paths, chunk_size=512, chunk_overlap=50)\` — loads HTML with \`UnstructuredHTMLLoader\`, attaches metadata, and applies \`RecursiveCharacterTextSplitter\`
-- [ ] Verify correct chunking by querying the ChromaDB collection
-
-## Acceptance criteria
-- Each Document has \`volleyball_type\`, \`competition_level\`, \`organization\` metadata fields
-- At least 2 HTML files are loaded (sand rules + beach league rules)
-
-## Reference
-\`Notebooks/Instructions_for_Implementing_RAG_with_VolleyBall_Dataset.md\` — Challenge 2 (Section 5)" \
+            $'## Overview\nImplement `extract_html_metadata_volleyball()` and `load_and_chunk_html_volleyball()` for official volleyball rules HTML files.\n\n## Deliverables\n- [ ] `extract_html_metadata_volleyball(file_path)` — extracts `volleyball_type` (beach/sand/grass/indoor), `competition_level`, `organization`, and `rule_sections` from filename and content\n- [ ] `load_and_chunk_html_volleyball(file_paths, chunk_size=512, chunk_overlap=50)` — loads HTML with `UnstructuredHTMLLoader`, attaches metadata, and applies `RecursiveCharacterTextSplitter`\n- [ ] Verify correct chunking by querying the ChromaDB collection\n\n## Acceptance criteria\n- Each Document has `volleyball_type`, `competition_level`, `organization` metadata fields\n- At least 2 HTML files are loaded (sand rules + beach league rules)\n\n## Reference\n`Notebooks/Instructions_for_Implementing_RAG_with_VolleyBall_Dataset.md` — Challenge 2 (Section 5)' \
             "notebook-1,data-loading" "$M1")
           ISSUE_NUMBERS+=("$N")
           echo "  #$N [N1] HTML Volleyball Rules Metadata Extraction"
 
           N=$(create_issue \
             "[N1] Text File Loader with Content Categorization" \
-            "## Overview
-Implement \`extract_text_metadata_volleyball()\` and loading logic for TXT files (lesson plans + grass volleyball rules).
-
-## Deliverables
-- [ ] \`extract_text_metadata_volleyball(file_path)\` — identifies \`content_type\` (lesson_plan / rules), \`document_category\` (educational / regulatory), \`volleyball_type\`, \`competition_level\` from filename patterns
-- [ ] Load all TXT files with \`TextLoader\`, attach metadata, and chunk with shared splitter
-
-## Acceptance criteria
-- Junior High Lesson Plans: \`content_type=lesson_plan\`, \`competition_level=junior\`
-- USL Grass Rules: \`content_type=rules\`, \`volleyball_type=grass\`
-
-## Reference
-\`Notebooks/Instructions_for_Implementing_RAG_with_VolleyBall_Dataset.md\` — Section 6" \
+            $'## Overview\nImplement `extract_text_metadata_volleyball()` and loading logic for TXT files (lesson plans + grass volleyball rules).\n\n## Deliverables\n- [ ] `extract_text_metadata_volleyball(file_path)` — identifies `content_type` (lesson_plan / rules), `document_category` (educational / regulatory), `volleyball_type`, `competition_level` from filename patterns\n- [ ] Load all TXT files with `TextLoader`, attach metadata, and chunk with shared splitter\n\n## Acceptance criteria\n- Junior High Lesson Plans: `content_type=lesson_plan`, `competition_level=junior`\n- USL Grass Rules: `content_type=rules`, `volleyball_type=grass`\n\n## Reference\n`Notebooks/Instructions_for_Implementing_RAG_with_VolleyBall_Dataset.md` — Section 6' \
             "notebook-1,data-loading" "$M1")
           ISSUE_NUMBERS+=("$N")
           echo "  #$N [N1] Text File Loader with Content Categorization"
 
           N=$(create_issue \
             "[N1] Build ChromaDB Vector Store from All Document Sources" \
-            "## Overview
-Combine CSV, HTML, and TXT document lists and create a persistent ChromaDB vector store using the local embedding model.
-
-## Deliverables
-- [ ] Merge all document lists: \`all_documents = csv_documents + html_documents + text_documents\`
-- [ ] Create \`Chroma.from_documents()\` with collection name \`VolleyBall_Documentation_RAG\` persisted to \`./chroma_db_volleyball\`
-- [ ] Print document counts per source type and total indexed count
-
-## Acceptance criteria
-- Vector store successfully created with documents from all three source types
-- \`vectorstore._collection.count()\` returns the total document count
-
-## Reference
-\`Notebooks/Instructions_for_Implementing_RAG_with_VolleyBall_Dataset.md\` — Section 7" \
+            $'## Overview\nCombine CSV, HTML, and TXT document lists and create a persistent ChromaDB vector store using the local embedding model.\n\n## Deliverables\n- [ ] Merge all document lists: `all_documents = csv_documents + html_documents + text_documents`\n- [ ] Create `Chroma.from_documents()` with collection name `VolleyBall_Documentation_RAG` persisted to `./chroma_db_volleyball`\n- [ ] Print document counts per source type and total indexed count\n\n## Acceptance criteria\n- Vector store successfully created with documents from all three source types\n- `vectorstore._collection.count()` returns the total document count\n\n## Reference\n`Notebooks/Instructions_for_Implementing_RAG_with_VolleyBall_Dataset.md` — Section 7' \
             "notebook-1,infrastructure" "$M1")
           ISSUE_NUMBERS+=("$N")
           echo "  #$N [N1] Build ChromaDB Vector Store from All Document Sources"
 
           N=$(create_issue \
             "[N1] Domain-Specific Volleyball System Prompt" \
-            "## Overview
-Create a volleyball-tailored system prompt for the RAG function that guides the LLM to produce accurate, domain-appropriate answers.
-
-## Deliverables
-- [ ] Define \`volleyball_system_message\` covering: formats (beach/sand/grass/indoor), statistics, lesson plans, and regulations
-- [ ] Integrate into the \`RAG(question)\` function replacing the generic system message
-- [ ] Instruct model to specify volleyball format when relevant and cite statistics with team/date context
-
-## Acceptance criteria
-- System prompt references all four volleyball formats
-- RAG function uses the prompt and generates volleyball-appropriate answers
-
-## Reference
-\`Notebooks/Instructions_for_Implementing_RAG_with_VolleyBall_Dataset.md\` — Challenge 3 (Section 8)" \
+            $'## Overview\nCreate a volleyball-tailored system prompt for the RAG function that guides the LLM to produce accurate, domain-appropriate answers.\n\n## Deliverables\n- [ ] Define `volleyball_system_message` covering: formats (beach/sand/grass/indoor), statistics, lesson plans, and regulations\n- [ ] Integrate into the `RAG(question)` function replacing the generic system message\n- [ ] Instruct model to specify volleyball format when relevant and cite statistics with team/date context\n\n## Acceptance criteria\n- System prompt references all four volleyball formats\n- RAG function uses the prompt and generates volleyball-appropriate answers\n\n## Reference\n`Notebooks/Instructions_for_Implementing_RAG_with_VolleyBall_Dataset.md` — Challenge 3 (Section 8)' \
             "notebook-1,retrieval" "$M1")
           ISSUE_NUMBERS+=("$N")
           echo "  #$N [N1] Domain-Specific Volleyball System Prompt"
 
           N=$(create_issue \
             "[N1] Diverse Volleyball Query Testing" \
-            "## Overview
-Test the complete RAG pipeline with at least 10 diverse volleyball queries covering different document types and question styles.
-
-## Deliverables
-- [ ] Implement and run at least the following query categories:
-  - Rules queries (serving rules, scoring system, player count)
-  - Statistics queries (match results, team performance)
-  - Educational queries (junior drills, beginner fundamentals)
-  - Comparative queries (beach vs. grass rules)
-  - Specific fact queries (court dimensions, net violations)
-- [ ] Print question + answer for each query
-
-## Acceptance criteria
-- At least 5 queries tested and producing non-empty answers
-- Answers reference the correct document type (rules/stats/education) where appropriate
-
-## Reference
-\`Notebooks/Instructions_for_Implementing_RAG_with_VolleyBall_Dataset.md\` — Challenge 4 (Section 9)" \
+            $'## Overview\nTest the complete RAG pipeline with at least 10 diverse volleyball queries covering different document types and question styles.\n\n## Deliverables\n- [ ] Implement and run at least the following query categories:\n  - Rules queries (serving rules, scoring system, player count)\n  - Statistics queries (match results, team performance)\n  - Educational queries (junior drills, beginner fundamentals)\n  - Comparative queries (beach vs. grass rules)\n  - Specific fact queries (court dimensions, net violations)\n- [ ] Print question + answer for each query\n\n## Acceptance criteria\n- At least 5 queries tested and producing non-empty answers\n- Answers reference the correct document type (rules/stats/education) where appropriate\n\n## Reference\n`Notebooks/Instructions_for_Implementing_RAG_with_VolleyBall_Dataset.md` — Challenge 4 (Section 9)' \
             "notebook-1,evaluation" "$M1")
           ISSUE_NUMBERS+=("$N")
           echo "  #$N [N1] Diverse Volleyball Query Testing"
 
           N=$(create_issue \
             "[N1] Domain Evaluation: Terminology Accuracy & Rule Specificity" \
-            "## Overview
-Implement two volleyball-specific evaluation functions on top of the standard groundedness / context-relevance / answer-relevance metrics.
-
-## Deliverables
-- [ ] \`evaluate_volleyball_terminology(question, answer)\` — 1–5 score for correct use of serve, spike, dig, set, block, libero, rally scoring, etc.
-- [ ] \`evaluate_rule_specificity(question, answer, context)\` — 1–5 score for whether format-specific rules (beach vs. indoor) are stated clearly
-- [ ] \`evaluate_volleyball_rag_response(question, answer, context)\` — runs all 5 metrics and returns a dict
-- [ ] Run comprehensive evaluation on at least 1 sample query
-
-## Acceptance criteria
-- Both new evaluators return a score (1–5) and textual explanation
-- Rule specificity evaluator only runs when question contains rule-related keywords
-
-## Reference
-\`Notebooks/Instructions_for_Implementing_RAG_with_VolleyBall_Dataset.md\` — Challenge 5 (Section 10)" \
+            $'## Overview\nImplement two volleyball-specific evaluation functions on top of the standard groundedness / context-relevance / answer-relevance metrics.\n\n## Deliverables\n- [ ] `evaluate_volleyball_terminology(question, answer)` — 1–5 score for correct use of serve, spike, dig, set, block, libero, rally scoring, etc.\n- [ ] `evaluate_rule_specificity(question, answer, context)` — 1–5 score for whether format-specific rules (beach vs. indoor) are stated clearly\n- [ ] `evaluate_volleyball_rag_response(question, answer, context)` — runs all 5 metrics and returns a dict\n- [ ] Run comprehensive evaluation on at least 1 sample query\n\n## Acceptance criteria\n- Both new evaluators return a score (1–5) and textual explanation\n- Rule specificity evaluator only runs when question contains rule-related keywords\n\n## Reference\n`Notebooks/Instructions_for_Implementing_RAG_with_VolleyBall_Dataset.md` — Challenge 5 (Section 10)' \
             "notebook-1,evaluation" "$M1")
           ISSUE_NUMBERS+=("$N")
           echo "  #$N [N1] Domain Evaluation: Terminology Accuracy & Rule Specificity"
 
           N=$(create_issue \
             "[N1] Metadata-Based Filtered Retrieval" \
-            "## Overview
-Implement \`filtered_rag_query()\` that applies ChromaDB metadata filters before retrieval, enabling targeted queries by volleyball type, source type, or document category.
-
-## Deliverables
-- [ ] \`filtered_rag_query(question, filters=None)\` — applies \`search_kwargs={'filter': filters}\` to the vectorstore retriever
-- [ ] Demonstrate three filtered queries:
-  1. Beach volleyball rules only (\`volleyball_type='beach'\`)
-  2. CSV match data only (\`source_type='csv'\`)
-  3. Educational content only (\`document_category='educational'\`)
-
-## Acceptance criteria
-- Filtered queries return documents only from the requested metadata category
-- All three demo queries produce different, non-empty answers
-
-## Reference
-\`Notebooks/Instructions_for_Implementing_RAG_with_VolleyBall_Dataset.md\` — Challenge 6 (Section 11)" \
+            $'## Overview\nImplement `filtered_rag_query()` that applies ChromaDB metadata filters before retrieval, enabling targeted queries by volleyball type, source type, or document category.\n\n## Deliverables\n- [ ] `filtered_rag_query(question, filters=None)` — applies `search_kwargs={\'filter\': filters}` to the vectorstore retriever\n- [ ] Demonstrate three filtered queries:\n  1. Beach volleyball rules only (`volleyball_type=\'beach\'`)\n  2. CSV match data only (`source_type=\'csv\'`)\n  3. Educational content only (`document_category=\'educational\'`)\n\n## Acceptance criteria\n- Filtered queries return documents only from the requested metadata category\n- All three demo queries produce different, non-empty answers\n\n## Reference\n`Notebooks/Instructions_for_Implementing_RAG_with_VolleyBall_Dataset.md` — Challenge 6 (Section 11)' \
             "notebook-1,retrieval" "$M1")
           ISSUE_NUMBERS+=("$N")
           echo "  #$N [N1] Metadata-Based Filtered Retrieval"
@@ -285,126 +174,42 @@ Implement \`filtered_rag_query()\` that applies ChromaDB metadata filters before
 
           N=$(create_issue \
             "[N2] Base Setup: Replicate Document Loading Pipeline" \
-            "## Overview
-Replicate Sections 1–7 from Notebook 1 inside \`RAG_with_Agentic_RAG_and_Embeddings_VolleyBall.ipynb\` so the agentic notebook has its own complete data pipeline.
-
-## Deliverables
-- [ ] Copy installation, imports, model loading (Qwen2.5 + all-MiniLM-L6-v2)
-- [ ] Re-run CSV / HTML / TXT loaders and rebuild the ChromaDB vector store
-- [ ] Verify document counts match Notebook 1
-
-## Acceptance criteria
-- ChromaDB collection built successfully within Notebook 2 environment
-- No new functionality added — exact replication of N1 Sections 1–7
-
-## Reference
-\`Notebooks/Instructions_for_Implementing_RAG_with_VolleyBall_Dataset.md\` — Notebook 2, Sections 1–7" \
+            $'## Overview\nReplicate Sections 1–7 from Notebook 1 inside `RAG_with_Agentic_RAG_and_Embeddings_VolleyBall.ipynb` so the agentic notebook has its own complete data pipeline.\n\n## Deliverables\n- [ ] Copy installation, imports, model loading (Qwen2.5 + all-MiniLM-L6-v2)\n- [ ] Re-run CSV / HTML / TXT loaders and rebuild the ChromaDB vector store\n- [ ] Verify document counts match Notebook 1\n\n## Acceptance criteria\n- ChromaDB collection built successfully within Notebook 2 environment\n- No new functionality added — exact replication of N1 Sections 1–7\n\n## Reference\n`Notebooks/Instructions_for_Implementing_RAG_with_VolleyBall_Dataset.md` — Notebook 2, Sections 1–7' \
             "notebook-2,infrastructure" "$M2")
           ISSUE_NUMBERS+=("$N")
           echo "  #$N [N2] Base Setup: Replicate Document Loading Pipeline"
 
           N=$(create_issue \
             "[N2] CSV Analyzer Tool — Statistical Analysis (smolagents)" \
-            "## Overview
-Build \`VolleyBallCSVAnalyzer(Tool)\` — a smolagents tool that answers natural-language statistical questions about volleyball match data using pandas.
-
-## Deliverables
-- [ ] Class inheriting from smolagents \`Tool\` with \`name\`, \`description\`, \`inputs\`, \`output_type\`
-- [ ] \`forward(query)\` implementing query routing for: team stats, date-based, score/result, comparison, and general-overview queries
-- [ ] Uses \`pandas\` for data analysis and returns natural-language results
-- [ ] Tool instantiated with the CSV file path
-
-## Acceptance criteria
-- Tool correctly answers at least: \"total matches\", \"which teams played\", \"average scores\"
-- Error handling returns a helpful message rather than raising an exception
-
-## Reference
-\`Notebooks/Instructions_for_Implementing_RAG_with_VolleyBall_Dataset.md\` — Challenge 7 (Section 8)" \
+            $'## Overview\nBuild `VolleyBallCSVAnalyzer(Tool)` — a smolagents tool that answers natural-language statistical questions about volleyball match data using pandas.\n\n## Deliverables\n- [ ] Class inheriting from smolagents `Tool` with `name`, `description`, `inputs`, `output_type`\n- [ ] `forward(query)` implementing query routing for: team stats, date-based, score/result, comparison, and general-overview queries\n- [ ] Uses `pandas` for data analysis and returns natural-language results\n- [ ] Tool instantiated with the CSV file path\n\n## Acceptance criteria\n- Tool correctly answers at least: "total matches", "which teams played", "average scores"\n- Error handling returns a helpful message rather than raising an exception\n\n## Reference\n`Notebooks/Instructions_for_Implementing_RAG_with_VolleyBall_Dataset.md` — Challenge 7 (Section 8)' \
             "notebook-2,agent,csv-analysis" "$M2")
           ISSUE_NUMBERS+=("$N")
           echo "  #$N [N2] CSV Analyzer Tool — Statistical Analysis (smolagents)"
 
           N=$(create_issue \
             "[N2] Rules Comparison Tool — Multi-Document Reasoning (smolagents)" \
-            "## Overview
-Build \`VolleyBallRulesComparison(Tool)\` that retrieves format-specific rules from ChromaDB and produces side-by-side comparisons.
-
-## Deliverables
-- [ ] Class inheriting from smolagents \`Tool\`
-- [ ] \`forward(query)\` identifies volleyball formats mentioned in query, retrieves rules per format using metadata filter \`volleyball_type\`, and formats a comparison
-- [ ] Falls back to comparing all formats when none are explicitly mentioned
-
-## Acceptance criteria
-- Tool correctly retrieves separate rule sections for beach vs. grass formats
-- Comparison output clearly labels each format section
-
-## Reference
-\`Notebooks/Instructions_for_Implementing_RAG_with_VolleyBall_Dataset.md\` — Challenge 8 (Section 9)" \
+            $'## Overview\nBuild `VolleyBallRulesComparison(Tool)` that retrieves format-specific rules from ChromaDB and produces side-by-side comparisons.\n\n## Deliverables\n- [ ] Class inheriting from smolagents `Tool`\n- [ ] `forward(query)` identifies volleyball formats mentioned in query, retrieves rules per format using metadata filter `volleyball_type`, and formats a comparison\n- [ ] Falls back to comparing all formats when none are explicitly mentioned\n\n## Acceptance criteria\n- Tool correctly retrieves separate rule sections for beach vs. grass formats\n- Comparison output clearly labels each format section\n\n## Reference\n`Notebooks/Instructions_for_Implementing_RAG_with_VolleyBall_Dataset.md` — Challenge 8 (Section 9)' \
             "notebook-2,agent,retrieval" "$M2")
           ISSUE_NUMBERS+=("$N")
           echo "  #$N [N2] Rules Comparison Tool — Multi-Document Reasoning (smolagents)"
 
           N=$(create_issue \
             "[N2] Multi-Tool Volleyball Agent" \
-            "## Overview
-Assemble a \`CodeAgent\` (smolagents) with all three tools: knowledge search, CSV analyzer, and rules comparison.
-
-## Deliverables
-- [ ] \`VolleyBallKnowledgeSearch(Tool)\` — wraps the ChromaDB similarity search
-- [ ] \`CodeAgent(tools=[knowledge_tool, csv_analyzer_tool, rules_comparison_tool], max_steps=10, verbosity_level=2)\`
-- [ ] Confirm the agent selects the right tool for each query type
-
-## Acceptance criteria
-- Agent initializes without errors
-- Verbose mode shows tool selection reasoning
-- Agent can be queried with natural language
-
-## Reference
-\`Notebooks/Instructions_for_Implementing_RAG_with_VolleyBall_Dataset.md\` — Challenge 9 (Section 10)" \
+            $'## Overview\nAssemble a `CodeAgent` (smolagents) with all three tools: knowledge search, CSV analyzer, and rules comparison.\n\n## Deliverables\n- [ ] `VolleyBallKnowledgeSearch(Tool)` — wraps the ChromaDB similarity search\n- [ ] `CodeAgent(tools=[knowledge_tool, csv_analyzer_tool, rules_comparison_tool], max_steps=10, verbosity_level=2)`\n- [ ] Confirm the agent selects the right tool for each query type\n\n## Acceptance criteria\n- Agent initializes without errors\n- Verbose mode shows tool selection reasoning\n- Agent can be queried with natural language\n\n## Reference\n`Notebooks/Instructions_for_Implementing_RAG_with_VolleyBall_Dataset.md` — Challenge 9 (Section 10)' \
             "notebook-2,agent" "$M2")
           ISSUE_NUMBERS+=("$N")
           echo "  #$N [N2] Multi-Tool Volleyball Agent"
 
           N=$(create_issue \
             "[N2] Complex Multi-Step Query Testing" \
-            "## Overview
-Test the multi-tool agent with four query types that require different tool selections and observe verbose reasoning.
-
-## Deliverables
-- [ ] Run all four test cases:
-  1. Statistical: \"Which team has won the most matches and what is their win rate?\" → expects \`volleyball_statistics_analyzer\`
-  2. Comparative: \"What are the main differences between beach and grass volleyball rules?\" → expects \`volleyball_rules_comparison\`
-  3. Educational: \"What are good drills for teaching volleyball to beginners?\" → expects \`volleyball_knowledge_search\`
-  4. Multi-step: \"Based on match data, what rules should junior players focus on?\" → expects multiple tools
-- [ ] Document which tool was actually selected for each query
-
-## Acceptance criteria
-- Agent completes all four queries without error
-- At least 3/4 queries use the expected tool
-
-## Reference
-\`Notebooks/Instructions_for_Implementing_RAG_with_VolleyBall_Dataset.md\` — Challenge 10 (Section 11)" \
+            $'## Overview\nTest the multi-tool agent with four query types that require different tool selections and observe verbose reasoning.\n\n## Deliverables\n- [ ] Run all four test cases:\n  1. Statistical: "Which team has won the most matches and what is their win rate?" → expects `volleyball_statistics_analyzer`\n  2. Comparative: "What are the main differences between beach and grass volleyball rules?" → expects `volleyball_rules_comparison`\n  3. Educational: "What are good drills for teaching volleyball to beginners?" → expects `volleyball_knowledge_search`\n  4. Multi-step: "Based on match data, what rules should junior players focus on?" → expects multiple tools\n- [ ] Document which tool was actually selected for each query\n\n## Acceptance criteria\n- Agent completes all four queries without error\n- At least 3/4 queries use the expected tool\n\n## Reference\n`Notebooks/Instructions_for_Implementing_RAG_with_VolleyBall_Dataset.md` — Challenge 10 (Section 11)' \
             "notebook-2,evaluation" "$M2")
           ISSUE_NUMBERS+=("$N")
           echo "  #$N [N2] Complex Multi-Step Query Testing"
 
           N=$(create_issue \
             "[N2] Agent Evaluation: Tool Usage & Reasoning Quality" \
-            "## Overview
-Create \`ToolUsageEvaluator\` and \`MultiStepReasoningEvaluator\` tools, assemble them into an evaluation agent, and run comprehensive evaluation on a complex query.
-
-## Deliverables
-- [ ] \`ToolUsageEvaluator(Tool)\` — 1–5 score for tool selection appropriateness
-- [ ] \`MultiStepReasoningEvaluator(Tool)\` — 1–5 score for logical reasoning quality
-- [ ] \`comprehensive_volleyball_agent_evaluation()\` combining standard + volleyball-specific + agent-specific metrics (6 total)
-- [ ] Run evaluation on query: \"Which team has won the most matches and what rules should they focus on?\"
-
-## Acceptance criteria
-- Both evaluators return score (1–5) + text explanation
-- Comprehensive evaluation prints results for all 6 metrics
-
-## Reference
-\`Notebooks/Instructions_for_Implementing_RAG_with_VolleyBall_Dataset.md\` — Challenge 11 (Sections 12–13)" \
+            $'## Overview\nCreate `ToolUsageEvaluator` and `MultiStepReasoningEvaluator` tools, assemble them into an evaluation agent, and run comprehensive evaluation on a complex query.\n\n## Deliverables\n- [ ] `ToolUsageEvaluator(Tool)` — 1–5 score for tool selection appropriateness\n- [ ] `MultiStepReasoningEvaluator(Tool)` — 1–5 score for logical reasoning quality\n- [ ] `comprehensive_volleyball_agent_evaluation()` combining standard + volleyball-specific + agent-specific metrics (6 total)\n- [ ] Run evaluation on query: "Which team has won the most matches and what rules should they focus on?"\n\n## Acceptance criteria\n- Both evaluators return score (1–5) + text explanation\n- Comprehensive evaluation prints results for all 6 metrics\n\n## Reference\n`Notebooks/Instructions_for_Implementing_RAG_with_VolleyBall_Dataset.md` — Challenge 11 (Sections 12–13)' \
             "notebook-2,evaluation,agent" "$M2")
           ISSUE_NUMBERS+=("$N")
           echo "  #$N [N2] Agent Evaluation: Tool Usage & Reasoning Quality"
@@ -414,236 +219,77 @@ Create \`ToolUsageEvaluator\` and \`MultiStepReasoningEvaluator\` tools, assembl
 
           N=$(create_issue \
             "[N3] Base Setup: Replicate Document Loading Pipeline" \
-            "## Overview
-Replicate Sections 1–7 from Notebook 1 inside \`Advance_Agentic_RAG_with_Langchain_VolleyBall.ipynb\`.
-
-## Deliverables
-- [ ] Copy installation, imports, LangChain LLM wrapper, embedding model, all document loaders
-- [ ] Rebuild ChromaDB vector store \`VolleyBall_Documentation_RAG\`
-- [ ] Verify document counts match
-
-## Acceptance criteria
-- ChromaDB collection built successfully within Notebook 3 environment
-
-## Reference
-\`Notebooks/Instructions_for_Implementing_RAG_with_VolleyBall_Dataset.md\` — Notebook 3, Sections 1–7" \
+            $'## Overview\nReplicate Sections 1–7 from Notebook 1 inside `Advance_Agentic_RAG_with_Langchain_VolleyBall.ipynb`.\n\n## Deliverables\n- [ ] Copy installation, imports, LangChain LLM wrapper, embedding model, all document loaders\n- [ ] Rebuild ChromaDB vector store `VolleyBall_Documentation_RAG`\n- [ ] Verify document counts match\n\n## Acceptance criteria\n- ChromaDB collection built successfully within Notebook 3 environment\n\n## Reference\n`Notebooks/Instructions_for_Implementing_RAG_with_VolleyBall_Dataset.md` — Notebook 3, Sections 1–7' \
             "notebook-3,infrastructure" "$M3")
           ISSUE_NUMBERS+=("$N")
           echo "  #$N [N3] Base Setup: Replicate Document Loading Pipeline"
 
           N=$(create_issue \
             "[N3] Advanced CSV Analysis Tool (LangChain + pandas)" \
-            "## Overview
-Build \`create_advanced_csv_analyzer(csv_path)\` returning a LangChain \`Tool\` with pandas-powered analysis supporting time series, comparisons, aggregations, and filtering.
-
-## Deliverables
-- [ ] \`analyze_csv(query)\` inner function routing to: trend/time-series, comparison, aggregation, filtering, and comprehensive-stats branches
-- [ ] LangChain \`Tool\` wrapper returned from factory function
-- [ ] All branches return human-readable string results
-
-## Acceptance criteria
-- Tool handles at least 4 query types without raising exceptions
-- Factory function can be called with any valid CSV path
-
-## Reference
-\`Notebooks/Instructions_for_Implementing_RAG_with_VolleyBall_Dataset.md\` — Challenge 12 (Section 8)" \
+            $'## Overview\nBuild `create_advanced_csv_analyzer(csv_path)` returning a LangChain `Tool` with pandas-powered analysis supporting time series, comparisons, aggregations, and filtering.\n\n## Deliverables\n- [ ] `analyze_csv(query)` inner function routing to: trend/time-series, comparison, aggregation, filtering, and comprehensive-stats branches\n- [ ] LangChain `Tool` wrapper returned from factory function\n- [ ] All branches return human-readable string results\n\n## Acceptance criteria\n- Tool handles at least 4 query types without raising exceptions\n- Factory function can be called with any valid CSV path\n\n## Reference\n`Notebooks/Instructions_for_Implementing_RAG_with_VolleyBall_Dataset.md` — Challenge 12 (Section 8)' \
             "notebook-3,agent,csv-analysis" "$M3")
           ISSUE_NUMBERS+=("$N")
           echo "  #$N [N3] Advanced CSV Analysis Tool (LangChain + pandas)"
 
           N=$(create_issue \
             "[N3] Agent V1: Basic Vector Retriever" \
-            "## Overview
-Build the baseline LangChain ReAct agent (\`agent_v1_executor\`) using simple vector similarity search as its only retrieval tool.
-
-## Deliverables
-- [ ] \`basic_volleyball_retriever(query)\` — top-5 similarity search, returns formatted doc excerpts
-- [ ] \`basic_retriever_tool = Tool(name='volleyball_retriever_v1', ...)\`
-- [ ] \`AgentExecutor\` with \`create_react_agent(llm, [basic_retriever_tool], react_prompt)\`, \`max_iterations=5\`
-
-## Acceptance criteria
-- Agent responds to a simple rules query without error
-- Response cites at least one retrieved document
-
-## Reference
-\`Notebooks/Instructions_for_Implementing_RAG_with_VolleyBall_Dataset.md\` — Section 9 (Agent V1)" \
+            $'## Overview\nBuild the baseline LangChain ReAct agent (`agent_v1_executor`) using simple vector similarity search as its only retrieval tool.\n\n## Deliverables\n- [ ] `basic_volleyball_retriever(query)` — top-5 similarity search, returns formatted doc excerpts\n- [ ] `basic_retriever_tool = Tool(name=\'volleyball_retriever_v1\', ...)`\n- [ ] `AgentExecutor` with `create_react_agent(llm, [basic_retriever_tool], react_prompt)`, `max_iterations=5`\n\n## Acceptance criteria\n- Agent responds to a simple rules query without error\n- Response cites at least one retrieved document\n\n## Reference\n`Notebooks/Instructions_for_Implementing_RAG_with_VolleyBall_Dataset.md` — Section 9 (Agent V1)' \
             "notebook-3,retrieval" "$M3")
           ISSUE_NUMBERS+=("$N")
           echo "  #$N [N3] Agent V1: Basic Vector Retriever"
 
           N=$(create_issue \
             "[N3] Agent V2: Hypothetical Question Expansion" \
-            "## Overview
-Implement \`generate_volleyball_hypothetical_questions()\` and wrap it into \`agent_v2_executor\` to broaden retrieval coverage.
-
-## Deliverables
-- [ ] \`generate_volleyball_hypothetical_questions(query, num=2)\` — LLM generates related questions covering formats, rules, stats, coaching angles
-- [ ] \`retriever_with_volleyball_hypotheticals(query)\` — retrieves for original + generated questions, de-duplicates
-- [ ] \`agent_v2_executor\` using the expanded retrieval tool
-
-## Acceptance criteria
-- 2 related questions are generated per input query
-- Retrieved set is larger and more diverse than V1 for the same query
-
-## Reference
-\`Notebooks/Instructions_for_Implementing_RAG_with_VolleyBall_Dataset.md\` — Challenge 13 (Section 10)" \
+            $'## Overview\nImplement `generate_volleyball_hypothetical_questions()` and wrap it into `agent_v2_executor` to broaden retrieval coverage.\n\n## Deliverables\n- [ ] `generate_volleyball_hypothetical_questions(query, num=2)` — LLM generates related questions covering formats, rules, stats, coaching angles\n- [ ] `retriever_with_volleyball_hypotheticals(query)` — retrieves for original + generated questions, de-duplicates\n- [ ] `agent_v2_executor` using the expanded retrieval tool\n\n## Acceptance criteria\n- 2 related questions are generated per input query\n- Retrieved set is larger and more diverse than V1 for the same query\n\n## Reference\n`Notebooks/Instructions_for_Implementing_RAG_with_VolleyBall_Dataset.md` — Challenge 13 (Section 10)' \
             "notebook-3,retrieval" "$M3")
           ISSUE_NUMBERS+=("$N")
           echo "  #$N [N3] Agent V2: Hypothetical Question Expansion"
 
           N=$(create_issue \
             "[N3] Agent V3: BM25 + Vector Hybrid Search" \
-            "## Overview
-Implement BM25 + vector \`EnsembleRetriever\` (weights 0.4/0.6) and wrap into \`agent_v3_executor\`.
-
-## Deliverables
-- [ ] \`BM25Retriever.from_documents(all_documents)\` with \`k=5\`
-- [ ] \`EnsembleRetriever(retrievers=[bm25_retriever, vector_retriever], weights=[0.4, 0.6])\`
-- [ ] \`volleyball_hybrid_search(query)\` wrapper function
-- [ ] \`agent_v3_executor\` using \`hybrid_tool_v3\`
-
-## Acceptance criteria
-- Hybrid retriever returns results combining both keyword and semantic matches
-- Agent handles volleyball terminology queries better than V1 baseline
-
-## Reference
-\`Notebooks/Instructions_for_Implementing_RAG_with_VolleyBall_Dataset.md\` — Challenge 14 (Section 11)" \
+            $'## Overview\nImplement BM25 + vector `EnsembleRetriever` (weights 0.4/0.6) and wrap into `agent_v3_executor`.\n\n## Deliverables\n- [ ] `BM25Retriever.from_documents(all_documents)` with `k=5`\n- [ ] `EnsembleRetriever(retrievers=[bm25_retriever, vector_retriever], weights=[0.4, 0.6])`\n- [ ] `volleyball_hybrid_search(query)` wrapper function\n- [ ] `agent_v3_executor` using `hybrid_tool_v3`\n\n## Acceptance criteria\n- Hybrid retriever returns results combining both keyword and semantic matches\n- Agent handles volleyball terminology queries better than V1 baseline\n\n## Reference\n`Notebooks/Instructions_for_Implementing_RAG_with_VolleyBall_Dataset.md` — Challenge 14 (Section 11)' \
             "notebook-3,retrieval" "$M3")
           ISSUE_NUMBERS+=("$N")
           echo "  #$N [N3] Agent V3: BM25 + Vector Hybrid Search"
 
           N=$(create_issue \
             "[N3] Agent V4: Cross-Encoder Re-Ranking" \
-            "## Overview
-Add cross-encoder re-ranking on top of hybrid retrieval and wrap into \`agent_v4_executor\`.
-
-## Deliverables
-- [ ] Load \`CrossEncoder('cross-encoder/ms-marco-MiniLM-L-6-v2')\`
-- [ ] \`volleyball_retrieval_with_reranking(query, top_k=5)\` — retrieves 10 candidates, scores all, returns top-k by cross-encoder score
-- [ ] \`agent_v4_executor\` using \`reranking_tool_v4\`
-
-## Acceptance criteria
-- Re-ranked results differ from the pre-reranking order for at least one query
-- Scores are printed alongside each result
-
-## Reference
-\`Notebooks/Instructions_for_Implementing_RAG_with_VolleyBall_Dataset.md\` — Challenge 15 (Section 12)" \
+            $'## Overview\nAdd cross-encoder re-ranking on top of hybrid retrieval and wrap into `agent_v4_executor`.\n\n## Deliverables\n- [ ] Load `CrossEncoder(\'cross-encoder/ms-marco-MiniLM-L-6-v2\')`\n- [ ] `volleyball_retrieval_with_reranking(query, top_k=5)` — retrieves 10 candidates, scores all, returns top-k by cross-encoder score\n- [ ] `agent_v4_executor` using `reranking_tool_v4`\n\n## Acceptance criteria\n- Re-ranked results differ from the pre-reranking order for at least one query\n- Scores are printed alongside each result\n\n## Reference\n`Notebooks/Instructions_for_Implementing_RAG_with_VolleyBall_Dataset.md` — Challenge 15 (Section 12)' \
             "notebook-3,retrieval" "$M3")
           ISSUE_NUMBERS+=("$N")
           echo "  #$N [N3] Agent V4: Cross-Encoder Re-Ranking"
 
           N=$(create_issue \
             "[N3] Agent V5: LLM Contextual Compression" \
-            "## Overview
-Wrap the hybrid retriever with \`ContextualCompressionRetriever\` and build the most capable agent \`agent_v5_executor\` (compression + CSV tool).
-
-## Deliverables
-- [ ] \`LLMChainExtractor.from_llm(llm)\` compressor
-- [ ] \`ContextualCompressionRetriever(base_compressor=compressor, base_retriever=hybrid_retriever_v3)\`
-- [ ] \`volleyball_compressed_retrieval(query)\` wrapper
-- [ ] \`agent_v5_executor\` with tools: \`[compression_tool_v5, advanced_csv_tool]\`, \`max_iterations=10\`
-
-## Acceptance criteria
-- Compressed documents are shorter than original retrieved docs
-- Agent can answer a query that requires both rules and statistics
-
-## Reference
-\`Notebooks/Instructions_for_Implementing_RAG_with_VolleyBall_Dataset.md\` — Challenge 16 (Section 13)" \
+            $'## Overview\nWrap the hybrid retriever with `ContextualCompressionRetriever` and build the most capable agent `agent_v5_executor` (compression + CSV tool).\n\n## Deliverables\n- [ ] `LLMChainExtractor.from_llm(llm)` compressor\n- [ ] `ContextualCompressionRetriever(base_compressor=compressor, base_retriever=hybrid_retriever_v3)`\n- [ ] `volleyball_compressed_retrieval(query)` wrapper\n- [ ] `agent_v5_executor` with tools: `[compression_tool_v5, advanced_csv_tool]`, `max_iterations=10`\n\n## Acceptance criteria\n- Compressed documents are shorter than original retrieved docs\n- Agent can answer a query that requires both rules and statistics\n\n## Reference\n`Notebooks/Instructions_for_Implementing_RAG_with_VolleyBall_Dataset.md` — Challenge 16 (Section 13)' \
             "notebook-3,retrieval" "$M3")
           ISSUE_NUMBERS+=("$N")
           echo "  #$N [N3] Agent V5: LLM Contextual Compression"
 
           N=$(create_issue \
             "[N3] Comparative Agent Testing (V1 → V5)" \
-            "## Overview
-Run all five agent versions against the same three test queries and compare outputs side-by-side.
-
-## Deliverables
-- [ ] \`compare_agent_performance(query_dict)\` — runs V1–V5, captures results dict
-- [ ] Test queries:
-  1. Simple: \"What are the serving rules in beach volleyball?\"
-  2. Medium: \"What are the differences between beach and grass volleyball serving rules?\"
-  3. Complex: \"Based on match statistics, what serving strategies seem most effective and what do the rules say about these techniques?\"
-- [ ] Print side-by-side truncated answers for all five versions
-
-## Acceptance criteria
-- All five agents complete all three queries without unhandled exceptions
-- Output clearly shows V1/V2/V3/V4/V5 answers for each query
-
-## Reference
-\`Notebooks/Instructions_for_Implementing_RAG_with_VolleyBall_Dataset.md\` — Challenge 17 (Section 14)" \
+            $'## Overview\nRun all five agent versions against the same three test queries and compare outputs side-by-side.\n\n## Deliverables\n- [ ] `compare_agent_performance(query_dict)` — runs V1–V5, captures results dict\n- [ ] Test queries:\n  1. Simple: "What are the serving rules in beach volleyball?"\n  2. Medium: "What are the differences between beach and grass volleyball serving rules?"\n  3. Complex: "Based on match statistics, what serving strategies seem most effective and what do the rules say about these techniques?"\n- [ ] Print side-by-side truncated answers for all five versions\n\n## Acceptance criteria\n- All five agents complete all three queries without unhandled exceptions\n- Output clearly shows V1/V2/V3/V4/V5 answers for each query\n\n## Reference\n`Notebooks/Instructions_for_Implementing_RAG_with_VolleyBall_Dataset.md` — Challenge 17 (Section 14)' \
             "notebook-3,evaluation" "$M3")
           ISSUE_NUMBERS+=("$N")
           echo "  #$N [N3] Comparative Agent Testing (V1 → V5)"
 
           N=$(create_issue \
             "[N3] KPI Evaluation: Quality Metrics + Performance Trade-offs" \
-            "## Overview
-Implement \`evaluate_agent_with_kpis()\` and \`compare_agents_comprehensive()\` to measure groundedness, context relevance, answer relevance, and execution time for V1, V3, and V5.
-
-## Deliverables
-- [ ] \`evaluate_groundedness(question, context, answer, llm)\` → \`{score, explanation, metric}\`
-- [ ] \`evaluate_context_relevance(question, context, llm)\` → same shape
-- [ ] \`evaluate_answer_relevance(question, answer, llm)\` → same shape
-- [ ] \`evaluate_agent_with_kpis(agent_executor, agent_name, query, retriever, llm)\` — times execution, retrieves context, runs all 3 metrics
-- [ ] \`compare_agents_comprehensive()\` — runs V1/V3/V5 on 5 test queries, builds \`pd.DataFrame\`
-- [ ] Print: average scores by agent, quality-per-second trade-off, best-performer summary
-- [ ] Save results to \`agent_comparison_results.csv\`
-- [ ] (Optional) Generate 3 matplotlib/seaborn visualizations
-
-## Acceptance criteria
-- DataFrame contains columns: \`agent\`, \`query_type\`, \`complexity\`, \`groundedness_score\`, \`context_relevance_score\`, \`answer_relevance_score\`, \`average_quality_score\`, \`execution_time\`
-- CSV saved successfully
-
-## Reference
-\`Notebooks/Instructions_for_Implementing_RAG_with_VolleyBall_Dataset.md\` — Challenge 17B (Section 14B)" \
+            $'## Overview\nImplement `evaluate_agent_with_kpis()` and `compare_agents_comprehensive()` to measure groundedness, context relevance, answer relevance, and execution time for V1, V3, and V5.\n\n## Deliverables\n- [ ] `evaluate_groundedness(question, context, answer, llm)` — returns `{score, explanation, metric}`\n- [ ] `evaluate_context_relevance(question, context, llm)` — same shape\n- [ ] `evaluate_answer_relevance(question, answer, llm)` — same shape\n- [ ] `evaluate_agent_with_kpis(agent_executor, agent_name, query, retriever, llm)` — times execution, retrieves context, runs all 3 metrics\n- [ ] `compare_agents_comprehensive()` — runs V1/V3/V5 on 5 test queries, builds `pd.DataFrame`\n- [ ] Print: average scores by agent, quality-per-second trade-off, best-performer summary\n- [ ] Save results to `agent_comparison_results.csv`\n- [ ] (Optional) Generate 3 matplotlib/seaborn visualizations\n\n## Acceptance criteria\n- DataFrame contains columns: `agent`, `query_type`, `complexity`, `groundedness_score`, `context_relevance_score`, `answer_relevance_score`, `average_quality_score`, `execution_time`\n- CSV saved successfully\n\n## Reference\n`Notebooks/Instructions_for_Implementing_RAG_with_VolleyBall_Dataset.md` — Challenge 17B (Section 14B)' \
             "notebook-3,evaluation" "$M3")
           ISSUE_NUMBERS+=("$N")
           echo "  #$N [N3] KPI Evaluation: Quality Metrics + Performance Trade-offs"
 
           N=$(create_issue \
             "[N3] Cross-Document Reasoning Queries" \
-            "## Overview
-Test Agent V5 with three complex queries that require synthesizing information from multiple document types (CSV stats + rules + lesson plans).
-
-## Deliverables
-- [ ] Run all three cross-document queries with V5:
-  1. Identify best-performing team → review rules and lesson plans → suggest training program
-  2. Analyze scoring patterns in match data → cross-reference with legal techniques in rules
-  3. Compare rule complexity across formats → recommend best format for beginners using lesson plan content
-- [ ] Observe and document tool selection and synthesis quality in verbose mode
-
-## Acceptance criteria
-- All three queries complete without error
-- Each answer integrates information from at least two document types
-- Verbose output shows how V5 decides which tool to use
-
-## Reference
-\`Notebooks/Instructions_for_Implementing_RAG_with_VolleyBall_Dataset.md\` — Challenge 18 (Section 15)" \
+            $'## Overview\nTest Agent V5 with three complex queries that require synthesizing information from multiple document types (CSV stats + rules + lesson plans).\n\n## Deliverables\n- [ ] Run all three cross-document queries with V5:\n  1. Identify best-performing team → review rules and lesson plans → suggest training program\n  2. Analyze scoring patterns in match data → cross-reference with legal techniques in rules\n  3. Compare rule complexity across formats → recommend best format for beginners using lesson plan content\n- [ ] Observe and document tool selection and synthesis quality in verbose mode\n\n## Acceptance criteria\n- All three queries complete without error\n- Each answer integrates information from at least two document types\n- Verbose output shows how V5 decides which tool to use\n\n## Reference\n`Notebooks/Instructions_for_Implementing_RAG_with_VolleyBall_Dataset.md` — Challenge 18 (Section 15)' \
             "notebook-3,retrieval,evaluation" "$M3")
           ISSUE_NUMBERS+=("$N")
           echo "  #$N [N3] Cross-Document Reasoning Queries"
 
           N=$(create_issue \
             "[N3] Intelligent Metadata Filtering" \
-            "## Overview
-Implement \`intelligent_filtered_retrieval(query)\` that automatically selects metadata filters by analyzing the query text, and wrap it as a LangChain Tool for V5.
-
-## Deliverables
-- [ ] \`intelligent_filtered_retrieval(query)\` — applies filters for: volleyball format (\`volleyball_type\`), source type (\`source_type\`), and competition level (\`competition_level\`) based on keywords
-- [ ] Logs the applied filters for transparency
-- [ ] Falls back to unfiltered retrieval when no filters are detected
-- [ ] Wrap as a LangChain \`Tool\` and demonstrate with 3 test queries:
-  1. Beach volleyball rules (auto-filter: \`volleyball_type=beach\`)
-  2. Match statistics query (auto-filter: \`source_type=csv\`)
-  3. Junior drill query (auto-filter: \`competition_level=junior\`)
-
-## Acceptance criteria
-- Correct filter is applied for all 3 demo queries
-- Printed filter log confirms what filters were applied
-
-## Reference
-\`Notebooks/Instructions_for_Implementing_RAG_with_VolleyBall_Dataset.md\` — Challenge 19 (Section 16)" \
+            $'## Overview\nImplement `intelligent_filtered_retrieval(query)` that automatically selects metadata filters by analyzing the query text, and wrap it as a LangChain Tool for V5.\n\n## Deliverables\n- [ ] `intelligent_filtered_retrieval(query)` — applies filters for: volleyball format (`volleyball_type`), source type (`source_type`), and competition level (`competition_level`) based on keywords\n- [ ] Logs the applied filters for transparency\n- [ ] Falls back to unfiltered retrieval when no filters are detected\n- [ ] Wrap as a LangChain `Tool` and demonstrate with 3 test queries:\n  1. Beach volleyball rules (auto-filter: `volleyball_type=beach`)\n  2. Match statistics query (auto-filter: `source_type=csv`)\n  3. Junior drill query (auto-filter: `competition_level=junior`)\n\n## Acceptance criteria\n- Correct filter is applied for all 3 demo queries\n- Printed filter log confirms what filters were applied\n\n## Reference\n`Notebooks/Instructions_for_Implementing_RAG_with_VolleyBall_Dataset.md` — Challenge 19 (Section 16)' \
             "notebook-3,retrieval" "$M3")
           ISSUE_NUMBERS+=("$N")
           echo "  #$N [N3] Intelligent Metadata Filtering"
